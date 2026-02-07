@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuel Paul | Virtual Instruments</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #080808;
+            --accent-orange: #ff5500;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Background Grid */
+        .bg-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background:
+                linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 85, 0, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: grid-move 30s linear infinite;
+        }
+
+        @keyframes grid-move {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 60px 60px;
+            }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 15px;
+            margin-bottom: 40px;
+            background: linear-gradient(to bottom, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .name-highlight {
+            color: var(--accent-orange);
+            -webkit-text-fill-color: var(--accent-orange);
+            display: block;
+            font-size: 5rem;
+            text-shadow: 0 0 30px rgba(255, 85, 0, 0.5);
+            margin-top: 10px;
+        }
+
+        .instruments-grid {
+            display: flex;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .instrument-card {
+            width: 320px;
+            height: 450px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        .instrument-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, var(--accent-orange) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: -1;
+        }
+
+        .instrument-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            border-color: var(--accent-orange);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 85, 0, 0.2);
+        }
+
+        .instrument-card:hover::before {
+            opacity: 0.15;
+        }
+
+        .icon-box {
+            font-size: 80px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .instrument-card:hover .icon-box {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .inst-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .inst-desc {
+            font-size: 14px;
+            color: #888;
+            max-width: 80%;
+            line-height: 1.6;
+        }
+
+        .btn-enter {
+            margin-top: 30px;
+            padding: 10px 30px;
+            border: 1px solid var(--accent-orange);
+            color: var(--accent-orange);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .instrument-card:hover .btn-enter {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 30px;
+            color: #444;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-lines"></div>
+
+    <div class="container">
+        <h1>VIRTUAL INSTRUMENTS BY <span class="name-highlight">SAMUEL PAUL</span></h1>
+
+        <div class="instruments-grid">
+            <!-- Casio Piano -->
+            <a href="KEYBOARD/index.html" class="instrument-card">
+                <div class="icon-box">🎹</div>
+                <div class="inst-title">CASIO CT-X</div>
+                <div class="inst-desc">Professional 61-key workstation with custom voices, recording, and real-time
+                    effects.</div>
+                <div class="btn-enter">Launch Piano</div>
+            </a>
+
+            <!-- Pad Device -->
+            <a href="PAD/pad.html" class="instrument-card" style="animation-delay: 0.2s;">
+                <div class="icon-box">🥁</div>
+                <div class="inst-title">PAD DTX-12</div>
+                <div class="inst-desc">High-performance percussion pad with Tabla, Dholak, and custom synth kits.</div>
+                <div class="btn-enter">Launch Pad</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        Digital Sound Engineering & Design
+    </div>
+</body>
+
+</html>

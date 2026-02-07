@@ -1,0 +1,784 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-body: #1a1a1a;
+    --case-black: #111;
+    --panel-gray: #2d2d2d;
+    --yamaha-orange: #ff5500;
+    --led-red: #ff3333;
+    --key-white: #fffdfc;
+    --key-black: #121212;
+    --kb-side-border: 25px;
+    /* Measurement for side blocks */
+}
+
+body {
+    margin: 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    overflow-x: auto;
+    padding: 20px;
+    position: relative;
+    --active-accent: var(--yamaha-orange);
+}
+
+/* Animated Grid Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 85, 0, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+    animation: grid-scroll 20s linear infinite;
+}
+
+@keyframes grid-scroll {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 50px 50px;
+    }
+}
+
+.hit-flare {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(circle at center, rgba(255, 85, 0, 0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+body.hit .hit-flare {
+    opacity: 1;
+}
+
+/* Audio Enable Prompt */
+.audio-prompt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    cursor: pointer;
+    animation: fadeIn 0.3s ease;
+}
+
+.audio-prompt.hidden {
+    display: none;
+}
+
+.audio-prompt-content {
+    text-align: center;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.audio-prompt-content h2 {
+    font-size: 32px;
+    margin: 0 0 10px 0;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.audio-prompt-content p {
+    font-size: 16px;
+    color: #aaa;
+    margin: 0;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+
+/* Piano Case */
+.piano-case {
+    background: var(--case-black);
+    width: fit-content;
+    max-width: 98vw;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.9),
+        0 20px 0 #080808,
+        /* 3D Depth */
+        inset 0 0 100px rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    border: 1px solid #222;
+    overflow: hidden;
+    transform: perspective(1500px) rotateX(10deg);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.piano-case:hover {
+    transform: perspective(1500px) rotateX(2deg);
+}
+
+/* Top Panel */
+.top-panel {
+    background: var(--panel-gray);
+    width: calc(var(--kb-width) + (var(--kb-side-border) * 2));
+    margin: 0 auto;
+    border-radius: 10px 10px 0 0;
+    height: 180px;
+    display: flex;
+    padding: 15px;
+    gap: 20px;
+    position: relative;
+    box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.6);
+    background-image: radial-gradient(#3a3a3a 1px, transparent 1px);
+    background-size: 4px 4px;
+    border: 2px solid #222;
+    border-bottom: 4px solid #111;
+}
+
+/* Speakers */
+.speaker-grill {
+    width: 140px;
+    height: 140px;
+    background: repeating-linear-gradient(45deg, #111 0px, #111 2px, #222 3px, #222 4px);
+    border-radius: 50%;
+    border: 4px solid #1a1a1a;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s;
+}
+
+.speaker-cone {
+    width: 60px;
+    height: 60px;
+    background: #000;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.speaker-grill.pulse {
+    transform: scale(1.05);
+    box-shadow: inset 0 0 20px rgba(255, 85, 0, 0.2);
+}
+
+/* Control Board */
+.control-board {
+    flex: 1;
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+}
+
+.brand-strip {
+    position: absolute;
+    top: -45px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-group {
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+}
+
+.casio-logo {
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-size: 24px;
+}
+
+.model-name {
+    color: #aaa;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.owner-badge {
+    margin-left: auto;
+    color: var(--yamaha-orange);
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 4px;
+    text-shadow: 0 0 15px rgba(255, 85, 0, 0.4);
+    border: 2px solid var(--yamaha-orange);
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+    animation: namePulse 2s infinite alternate;
+}
+
+@keyframes namePulse {
+    from {
+        color: #fff;
+        border-color: #fff;
+        text-shadow: 0 0 5px #fff;
+    }
+
+    to {
+        color: var(--yamaha-orange);
+        border-color: var(--yamaha-orange);
+        text-shadow: 0 0 20px var(--yamaha-orange);
+    }
+}
+
+@keyframes glow {
+    from {
+        opacity: 0.8;
+    }
+
+    to {
+        opacity: 1;
+        text-shadow: 0 0 20px rgba(255, 100, 0, 0.8);
+    }
+}
+
+/* Dashboard Layout */
+.dashboard {
+    flex: 2;
+    background: #222;
+    border-radius: 6px;
+    border: 1px solid #333;
+    display: flex;
+    padding: 5px;
+}
+
+/* Reference Panel */
+.reference-panel {
+    width: 200px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    padding: 8px;
+    display: flex;
+    gap: 10px;
+    font-size: 9px;
+    color: #888;
+    overflow: hidden;
+}
+
+.ref-title {
+    color: var(--yamaha-orange);
+    font-weight: bold;
+    border-bottom: 1px solid #444;
+    margin-bottom: 2px;
+}
+
+.reference-panel ul,
+.reference-panel ol {
+    padding-left: 15px;
+    margin: 0;
+}
+
+/* Interface Panel (Orange) */
+.interface-panel {
+    flex: 1;
+    background: var(--yamaha-orange);
+    margin-left: 10px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    align-items: center;
+    gap: 8px;
+}
+
+.display-unit {
+    background: #111;
+    width: 100%;
+    border-radius: 4px;
+    padding: 5px;
+    border: 2px solid #000;
+}
+
+.led-screen {
+    font-family: 'Orbitron', monospace;
+    color: var(--led-red);
+    text-align: center;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-shadow: 0 0 5px var(--led-red);
+}
+
+#disp-val {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#disp-label {
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.status-lights {
+    display: flex;
+    justify-content: space-between;
+    font-size: 8px;
+    color: #555;
+    margin-top: 4px;
+}
+
+.stat-light.active {
+    color: var(--led-red);
+    text-shadow: 0 0 5px red;
+    font-weight: bold;
+}
+
+.stat-light::before {
+    content: '●';
+    margin-right: 2px;
+}
+
+/* Buttons */
+.controls-cluster {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.mode-btns {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+}
+
+.nav-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.btn-rect {
+    background: #ddd;
+    border: none;
+    border-radius: 2px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #222;
+    box-shadow: 0 2px 0 #999;
+    cursor: pointer;
+}
+
+.btn-rect:active,
+.btn-rect.active {
+    background: #333;
+    color: #fff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    transform: translateY(2px);
+}
+
+.btn-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #444;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #111;
+}
+
+.btn-circle:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #111;
+}
+
+.btn-circle.red {
+    background: #d00;
+}
+
+/* Mixer Zone */
+.mixer-zone {
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 10px;
+    background: #252525;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.vol-slider-group {
+    width: 100%;
+    text-align: center;
+}
+
+.vol-slider-group label {
+    font-size: 9px;
+    color: #888;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.fader {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: #111;
+    border-radius: 2px;
+    outline: none;
+}
+
+.fader::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.fx-panel {
+    width: 100%;
+    background: #181818;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #333;
+}
+
+.fx-title {
+    font-size: 9px;
+    color: #aaa;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.led-visualizer {
+    display: flex;
+    gap: 2px;
+    height: 20px;
+    margin-bottom: 8px;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.bar {
+    width: 6px;
+    height: 4px;
+    /* default */
+    background: #333;
+    transition: height 0.05s, background 0.05s;
+}
+
+.bar.lit {
+    background: #0f0;
+    box-shadow: 0 0 5px #0f0;
+}
+
+.fx-toggles {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+}
+
+.btn-small {
+    font-size: 9px;
+    padding: 2px 5px;
+    background: #333;
+    color: #ccc;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+.btn-small.on {
+    background: #0c0;
+    color: #000;
+    box-shadow: 0 0 5px #0c0;
+}
+
+/* Recording Feature Styles */
+.btn-rec {
+    background: #444;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.2s;
+}
+
+.btn-rec.active {
+    background: #f00 !important;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+
+/* Keyboard Bed */
+.key-bed {
+    width: calc(var(--kb-width) + (var(--kb-side-border) * 2));
+    margin: 0 auto;
+    height: 240px;
+    background: #000;
+    padding-top: 20px;
+    background: linear-gradient(to bottom, #800 0%, #800 20px, #111 20px);
+    display: flex;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+    border-left: var(--kb-side-border) solid #151515;
+    border-right: var(--kb-side-border) solid #151515;
+    border-bottom: 12px solid #111;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Keys - Match User Reference */
+.key {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    padding-bottom: 8px !important;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    z-index: 1;
+}
+
+.key.white {
+    width: 44px;
+    /* Slightly wider */
+    height: 100%;
+    background: #ffffff !important;
+    border: 1px solid #777;
+    border-bottom: 5px solid #555;
+    border-radius: 0 0 4px 4px;
+    z-index: 5;
+    box-shadow: inset 0 -5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.key.white:active,
+.key.white.active {
+    background: #eee !important;
+    border-bottom: 2px solid #555;
+    transform: translateY(3px);
+}
+
+.key.black {
+    width: 28px;
+    /* Wider black keys */
+    height: 64%;
+    background: linear-gradient(to bottom, #111 0%, #333 100%) !important;
+    border: 1px solid #000;
+    border-bottom: 6px solid #000;
+    position: absolute;
+    z-index: 20 !important;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.key.black:active,
+.key.black.active {
+    border-bottom: 2px solid #000;
+    background: #000 !important;
+    transform: translateY(3px);
+}
+
+/* Key Label Containers */
+.key-label {
+    pointer-events: none;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    padding-bottom: 8px;
+}
+
+/* Keyboard Letter Label (A, S, D, etc.) */
+.kb-label {
+    font-size: 16px;
+    font-weight: 900;
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.15);
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 4px;
+    font-family: 'Roboto', sans-serif;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+/* White Keys Labels */
+.white .key-label {
+    color: #333;
+}
+
+.white .kb-label {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.white .key-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+}
+
+/* Black Keys Labels */
+.black .key-label {
+    color: #fff;
+    font-size: 9px;
+    font-weight: 600;
+}
+
+.black .kb-label {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    font-size: 12px;
+}
+
+/* Octave Selector */
+.octave-selector {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+}
+
+.octave-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #667eea;
+    text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    letter-spacing: 2px;
+}
+
+.octave-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.octave-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #667eea;
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+}
+
+.octave-btn:hover {
+    background: rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.octave-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #764ba2;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.6);
+    transform: scale(1.1);
+}
+
+.octave-btn:active {
+    transform: scale(0.95);
+}
+
+.keyboard-hint {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    max-width: 500px;
+    line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .octave-selector {
+        bottom: 10px;
+    }
+
+    .octave-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+
+    .keyboard-hint {
+        font-size: 9px;
+    }
+
+    .kb-label {
+        font-size: 12px;
+        padding: 2px 6px;
+    }
+}

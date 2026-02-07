@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yamaha DTX-MULTI 12 - Virtual Percussion Pad</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="pad.css">
+</head>
+
+<body>
+    <div id="bg-animation"></div>
+    <div class="hit-flare"></div>
+    <div class="pad-device">
+        <!-- Theme Selector -->
+        <div class="theme-selector">
+            <div class="theme-chip active" data-kit="drums">DRUMS</div>
+            <div class="theme-chip" data-kit="tabla">TABLA</div>
+            <div class="theme-chip" data-kit="dholak">DHOLAK</div>
+            <div class="theme-chip" data-kit="jazz">JAZZ</div>
+            <div class="theme-chip" data-kit="synth">SYNTH</div>
+        </div>
+
+        <div class="pads-container">
+            <!-- Top Horizontal Pads (3) -->
+            <div class="horizontal-pads">
+                <div class="drum-pad" id="pad-top-1" data-id="7">
+                    <div class="pad-key">7</div>
+                    <div class="visualizer-mini">
+                        <div class="v-bar" style="height: 10px;"></div>
+                        <div class="v-bar" style="height: 20px;"></div>
+                        <div class="v-bar" style="height: 10px;"></div>
+                    </div>
+                </div>
+                <div class="drum-pad" id="pad-top-2" data-id="8">
+                    <div class="pad-key">8</div>
+                </div>
+                <div class="drum-pad" id="pad-top-3" data-id="9">
+                    <div class="pad-key">9</div>
+                </div>
+            </div>
+
+            <!-- Middle Large Pads (2x3 Grid) -->
+            <div class="large-pads">
+                <div class="drum-pad" id="pad-4" data-id="4">
+                    <div class="pad-key">4</div>
+                    <div class="pad-label">TOM 1</div>
+                </div>
+                <div class="drum-pad" id="pad-5" data-id="5">
+                    <div class="pad-key">5</div>
+                    <div class="pad-label">TOM 2</div>
+                </div>
+                <div class="drum-pad" id="pad-6" data-id="6">
+                    <div class="pad-key">6</div>
+                    <div class="pad-label">CRASH</div>
+                </div>
+                <div class="drum-pad" id="pad-1" data-id="1">
+                    <div class="pad-key">1</div>
+                    <div class="pad-label">KICK</div>
+                </div>
+                <div class="drum-pad" id="pad-2" data-id="2">
+                    <div class="pad-key">2</div>
+                    <div class="pad-label">SNARE</div>
+                </div>
+                <div class="drum-pad" id="pad-3" data-id="3">
+                    <div class="pad-key">3</div>
+                    <div class="pad-label">H-HAT</div>
+                </div>
+            </div>
+
+            <!-- Bottom Horizontal Pads (3) -->
+            <div class="horizontal-pads">
+                <div class="drum-pad" id="pad-7" data-id="10">
+                    <div class="pad-key">V</div>
+                </div>
+                <div class="drum-pad" id="pad-8" data-id="11">
+                    <div class="pad-key">B</div>
+                </div>
+                <div class="drum-pad" id="pad-9" data-id="12">
+                    <div class="pad-key">N</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel Area -->
+        <div class="control-panel">
+            <!-- Left Volume Knob -->
+            <div class="knob-container">
+                <div class="knob-outer">
+                    <div class="knob-inner" id="vol-knob">
+                        <div class="knob-indicator"></div>
+                    </div>
+                </div>
+                <div class="knob-label">VOLUME</div>
+            </div>
+
+            <!-- Central Screen -->
+            <div class="screen-area">
+                <div class="branding">
+                    <span class="yamaha-logo">YAMAHA</span>
+                    <span class="model-number">DTX-MULTI 12</span>
+                    <div class="owner-name-tag">DESIGNED BY: SAMUEL PAUL</div>
+                </div>
+                <div class="led-display" id="main-display">
+                    <div class="led-line" id="disp-kit">KIT: P001</div>
+                    <div class="led-line led-sub" id="disp-name">Acoustic Percs</div>
+                </div>
+            </div>
+
+            <!-- Right Buttons Area -->
+            <div class="button-clusters">
+                <div class="extra-controls">
+                    <button class="feat-btn" id="btn-loop">Loop</button>
+                    <button class="feat-btn" id="btn-rec">Rec</button>
+                </div>
+                <div class="mini-grid">
+                    <div class="mini-btn active">MIDI</div>
+                    <div class="mini-btn" id="btn-echo">ECHO</div>
+                    <div class="mini-btn" id="btn-kit">KIT</div>
+                    <div class="mini-btn">FILE</div>
+                </div>
+                <div class="nav-buttons">
+                    <div class="nav-group">
+                        <div class="nav-btn" id="btn-dec">-</div>
+                        <div class="label-under">KIT DEC</div>
+                    </div>
+                    <div class="nav-group">
+                        <div class="nav-btn" id="btn-inc">+</div>
+                        <div class="label-under">KIT INC</div>
+                    </div>
+                    <div class="nav-group vol-btns">
+                        <button class="vol-btn" id="vol-down">VOL -</button>
+                        <button class="vol-btn" id="vol-up">VOL +</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Prompt (Hidden Overlay) -->
+    <div id="audio-start"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; z-index:100; cursor:pointer;">
+        <div style="background:#222; padding:30px; border-radius:10px; border:1px solid #444; text-align:center;">
+            <h2 style="color:var(--accent-orange); margin-bottom:10px;">DTX-MULTI 12</h2>
+            <p style="color:#aaa;">Click to Power On</p>
+        </div>
+    </div>
+
+    <script src="pad.js"></script>
+</body>
+
+</html>
