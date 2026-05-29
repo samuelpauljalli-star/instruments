@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let microphone = null;
     let animationId = null;
     let recognition = null;
+    let mediaStream = null;
 
     let currentSession = {
         lyrics: '',
@@ -63,7 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    micBtn.addEventListener('click', () => {
+    micBtn.addEventListener('click', async () => {
+        if (!audioCtx) {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.error("AudioContext initialization failed", e);
+            }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+            try {
+                await audioCtx.resume();
+            } catch (e) {
+                console.error("Failed to resume AudioContext", e);
+            }
+        }
+
         if (!isListening) {
             startListening();
         } else {
@@ -73,14 +89,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function startListening() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            
+            // Ensure AudioContext is initialized and resumed synchronously
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            } else if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+            }
+            if (audioCtx.state === 'suspended') {
+                await audioCtx.resume();
             }
 
+            // Get microphone stream with mobile-compatible, standard constraints
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true
+                }
+            });
+            mediaStream = stream;
+            
             analyser = audioCtx.createAnalyser();
             analyser.fftSize = 2048;
             microphone = audioCtx.createMediaStreamSource(stream);
@@ -97,13 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
             scaleBox.textContent = 'Analyzing...';
 
             if (recognition) {
-                try { recognition.start(); } catch(e) {}
+                try { 
+                    recognition.start(); 
+                } catch(e) {
+                    console.warn("Speech recognition failed to start", e);
+                }
             }
 
             detectPitch();
         } catch (err) {
             console.error("Microphone access denied or not available", err);
-            statusText.textContent = "Error: Microphone access denied.";
+            statusText.textContent = "Error: Microphone access denied or not supported.";
         }
     }
 
@@ -112,10 +142,29 @@ document.addEventListener('DOMContentLoaded', () => {
         micBtn.classList.remove('listening');
         statusText.textContent = "Analysis stopped. Ready to save.";
         
-        if (microphone) microphone.disconnect();
-        if (animationId) cancelAnimationFrame(animationId);
+        if (microphone) {
+            try {
+                microphone.disconnect();
+            } catch(e) {}
+            microphone = null;
+        }
+
+        if (mediaStream) {
+            try {
+                mediaStream.getTracks().forEach(track => track.stop());
+            } catch(e) {}
+            mediaStream = null;
+        }
+
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+
         if (recognition) {
-            try { recognition.stop(); } catch(e) {}
+            try { 
+                recognition.stop(); 
+            } catch(e) {}
         }
 
         determineScale();
