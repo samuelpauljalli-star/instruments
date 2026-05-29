@@ -1,0 +1,52 @@
+/* Existing styles... */
+
+/* Key Labels */
+.key {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    user-select: none;
+    color: #444;
+}
+
+.key.black {
+    color: white;
+    font-size: 10px;
+    align-items: flex-end;
+    /* Or center? Image shows labels on black keys too */
+    padding-bottom: 8px;
+    z-index: 10;
+    /* Ensure visible on top */
+}
+
+/* Adjust black key text to not be hidden */
+.key.black span {
+    transform: rotate(90deg);
+    /* Optional: vertical text for long labels like Ab/G# */
+    transform-origin: center;
+    margin-bottom: 5px;
+    display: none;
+    /* Hide black key labels by default if too cluttered, or show them. User image shows them. */
+    display: block;
+    font-size: 8px;
+}
+
+.key.white span {
+    margin-bottom: 5px;
+}
+
+/* Computer Key Hints (Optional overlay) */
+.key-hint {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #888;
+    display: none;
+    /* Show only if we want to guide user */
+}

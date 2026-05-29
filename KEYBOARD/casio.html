@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casio CT-X870IN - Virtual Piano</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="keyboard_guide.css">
+    <link rel="stylesheet" href="analyzer.css">
+</head>
+
+<body>
+    <div class="hit-flare"></div>
+    <!-- Audio Enable Prompt -->
+    <div class="audio-prompt" id="audio-prompt">
+        <div class="audio-prompt-content">
+            <h2>🎵 Click anywhere to enable audio</h2>
+            <p>Browser requires user interaction to play sound</p>
+        </div>
+    </div>
+    <div class="piano-case">
+        <!-- Top Control Panel -->
+        <div class="top-panel">
+            <!-- Left Speaker -->
+            <div class="speaker-grill left">
+                <div class="speaker-cone"></div>
+            </div>
+            <!-- Central Control Area -->
+            <div class="control-board">
+                <!-- Branding -->
+                <div class="brand-strip">
+                    <div class="logo-group">
+                        <span class="casio-logo">CASIO</span>
+                        <span class="model-name">CT-X870IN</span>
+                    </div>
+                    <div class="owner-badge">
+                        <span>SAMUEL PAUL JALLI</span>
+                    </div>
+                </div>
+
+                <div class="dashboard">
+                    <!-- Printed Lists (Reference Guide) -->
+                    <div class="reference-panel">
+                        <div class="ref-section">
+                            <div class="ref-title">SONG</div>
+                            <ol>
+                                <li>001 DEMO</li>
+                                <li>002 ORIGINAL</li>
+                                <li>003 BALLAD</li>
+                            </ol>
+                        </div>
+                        <div class="ref-section">
+                            <div class="ref-title">VOICE</div>
+                            <ul>
+                                <li>001-008 PIANO</li>
+                                <li>009-018 E.PIANO</li>
+                                <li>019-028 ORGAN</li>
+                                <li>029-038 GUITAR</li>
+                                <li>060-070 SYNTH</li>
+                            </ul>
+                        </div>
+                        <div class="ref-section">
+                            <div class="ref-title">STYLE</div>
+                            <ul>
+                                <li>101-110 8-BEAT</li>
+                                <li>111-120 DANCE</li>
+                                <li>121-130 DISCO</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Main Interface (Orange) -->
+                    <div class="interface-panel">
+                        <!-- Display -->
+                        <div class="display-unit">
+                            <div class="led-screen">
+                                <span id="disp-val">001</span>
+                                <span id="disp-label">GRAND PIANO</span>
+                            </div>
+                            <div class="status-lights">
+                                <div class="stat-light active" id="led-voice">VOICE</div>
+                                <div class="stat-light" id="led-style">STYLE</div>
+                                <div class="stat-light" id="led-song">SONG/TEMPO</div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="controls-cluster">
+                            <div class="mode-btns">
+                                <button class="btn-rect active" id="btn-voice">VOICE</button>
+                                <button class="btn-rect" id="btn-style">STYLE</button>
+                                <button class="btn-rect" id="btn-song">SONG</button>
+                            </div>
+                            <div class="nav-btns">
+                                <button class="btn-circle red" id="btn-start">⏯</button>
+                                <button class="btn-rect gray" id="btn-prev">-</button>
+                                <button class="btn-rect gray" id="btn-next">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Volume / Mixer -->
+                <div class="mixer-zone">
+                    <div class="vol-slider-group">
+                        <label>MASTER VOL</label>
+                        <input type="range" min="0" max="100" value="80" class="fader" id="master-vol">
+                    </div>
+
+                    <div class="fx-panel">
+                        <div class="fx-title">FX MIXER</div>
+                        <div class="led-visualizer" id="visualizer">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                        <div class="fx-toggles">
+                            <button class="btn-small" id="btn-reverb">REV</button>
+                            <button class="btn-small" id="btn-echo">ECHO</button>
+                            <button class="btn-rec" id="btn-rec">REC</button>
+                            <button class="btn-rect gray" style="margin-left:5px; padding:2px 5px; font-size:8px;"
+                                id="btn-loop">LOOP</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Speaker -->
+            <div class="speaker-grill right">
+                <div class="speaker-cone"></div>
+            </div>
+        </div>
+
+        <!-- Keyboard Bed -->
+        <div class="key-bed" id="keyboard-container">
+            <!-- Keys generated by JS -->
+        </div>
+
+        <!-- Octave Selector -->
+        <div class="octave-selector">
+            <div class="octave-label" id="octave-indicator">OCTAVE 2</div>
+            <div class="octave-buttons">
+                <button class="octave-btn" data-octave="1">1</button>
+                <button class="octave-btn active" data-octave="2">2</button>
+                <button class="octave-btn" data-octave="3">3</button>
+                <button class="octave-btn" data-octave="4">4</button>
+                <button class="octave-btn" data-octave="5">5</button>
+            </div>
+            <div class="keyboard-hint">
+                SAMUEL PAUL JALLI
+            </div>
+        </div>
+    </div>
+    <!-- Floating Guide Buttons -->
+    <div class="floating-buttons" style="position: absolute; bottom: 20px; right: 20px; display: flex; gap: 15px; z-index: 100;">
+        <button class="keyboard-guide-btn" id="chords-guide-toggle" style="position: static; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #333;">🎵 Chords & Scales</button>
+        <button class="keyboard-guide-btn" id="guide-toggle" style="position: static;">🎹 Controls</button>
+    </div>
+
+    <!-- Keyboard Guide Overlay -->
+    <div class="keyboard-guide-overlay" id="keyboard-guide">
+        <div class="guide-content">
+            <button class="guide-close" id="guide-close">✕</button>
+            <h2>🎹 Computer Keyboard Controls</h2>
+            <div class="guide-section">
+                <h3>White Keys (C - C)</h3>
+                <div class="key-mapping">
+                    <span class="kbd">A</span> = C &nbsp;
+                    <span class="kbd">S</span> = D &nbsp;
+                    <span class="kbd">D</span> = E &nbsp;
+                    <span class="kbd">F</span> = F &nbsp;
+                    <span class="kbd">G</span> = G &nbsp;
+                    <span class="kbd">H</span> = A &nbsp;
+                    <span class="kbd">J</span> = B &nbsp;
+                    <span class="kbd">K</span> = C
+                </div>
+            </div>
+            <div class="guide-section">
+                <h3>Black Keys (Sharps)</h3>
+                <div class="key-mapping">
+                    <span class="kbd">W</span> = C# &nbsp;
+                    <span class="kbd">E</span> = D# &nbsp;
+                    <span class="kbd">T</span> = F# &nbsp;
+                    <span class="kbd">Y</span> = G# &nbsp;
+                    <span class="kbd">U</span> = A#
+                </div>
+            </div>
+            <div class="guide-section">
+                <h3>Octave Selection</h3>
+                <div class="key-mapping">
+                    Press <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span
+                        class="kbd">4</span> <span class="kbd">5</span> to switch between octaves
+                </div>
+            </div>
+            <div class="guide-tip">
+                💡 <strong>Tip:</strong> The keyboard letters are shown on each piano key! Press and hold to play
+                sustained notes.
+            </div>
+        </div>
+    </div>
+
+    <div class="keyboard-guide-overlay" id="chords-guide">
+        <div class="guide-content" style="max-width: 850px; max-height: 90vh; overflow-y: auto;">
+            <button class="guide-close" id="chords-guide-close">✕</button>
+            <h2>🎵 Chords & Scales Reference</h2>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <!-- Major Scales & Chords -->
+                <div class="guide-section" style="flex: 1; min-width: 350px;">
+                    <h3>Major Keys</h3>
+                    <div class="key-mapping" style="flex-direction: column; gap: 15px;">
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">C</strong>
+                            Scale: <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span><br>
+                            Chord: <span class="kbd">C</span> <span class="kbd">E</span> <span class="kbd">G</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">C#</strong>
+                            Scale: <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span><br>
+                            Chord: <span class="kbd">C#</span> <span class="kbd">F</span> <span class="kbd">G#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">D</strong>
+                            Scale: <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span><br>
+                            Chord: <span class="kbd">D</span> <span class="kbd">F#</span> <span class="kbd">A</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">D#</strong>
+                            Scale: <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span><br>
+                            Chord: <span class="kbd">D#</span> <span class="kbd">G</span> <span class="kbd">A#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">E</strong>
+                            Scale: <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span><br>
+                            Chord: <span class="kbd">E</span> <span class="kbd">G#</span> <span class="kbd">B</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">F</strong>
+                            Scale: <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span><br>
+                            Chord: <span class="kbd">F</span> <span class="kbd">A</span> <span class="kbd">C</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">F#</strong>
+                            Scale: <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span><br>
+                            Chord: <span class="kbd">F#</span> <span class="kbd">A#</span> <span class="kbd">C#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">G</strong>
+                            Scale: <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span><br>
+                            Chord: <span class="kbd">G</span> <span class="kbd">B</span> <span class="kbd">D</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">G#</strong>
+                            Scale: <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span><br>
+                            Chord: <span class="kbd">G#</span> <span class="kbd">C</span> <span class="kbd">D#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">A</strong>
+                            Scale: <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span><br>
+                            Chord: <span class="kbd">A</span> <span class="kbd">C#</span> <span class="kbd">E</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">A#</strong>
+                            Scale: <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span><br>
+                            Chord: <span class="kbd">A#</span> <span class="kbd">D</span> <span class="kbd">F</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 30px;">B</strong>
+                            Scale: <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span><br>
+                            Chord: <span class="kbd">B</span> <span class="kbd">D#</span> <span class="kbd">F#</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minor Scales & Chords -->
+                <div class="guide-section" style="flex: 1; min-width: 350px;">
+                    <h3>Minor Keys</h3>
+                    <div class="key-mapping" style="flex-direction: column; gap: 15px;">
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">Cm</strong>
+                            Scale: <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span><br>
+                            Chord: <span class="kbd">C</span> <span class="kbd">D#</span> <span class="kbd">G</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">C#m</strong>
+                            Scale: <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span><br>
+                            Chord: <span class="kbd">C#</span> <span class="kbd">E</span> <span class="kbd">G#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">Dm</strong>
+                            Scale: <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span><br>
+                            Chord: <span class="kbd">D</span> <span class="kbd">F</span> <span class="kbd">A</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">D#m</strong>
+                            Scale: <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span><br>
+                            Chord: <span class="kbd">D#</span> <span class="kbd">F#</span> <span class="kbd">A#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">Em</strong>
+                            Scale: <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span><br>
+                            Chord: <span class="kbd">E</span> <span class="kbd">G</span> <span class="kbd">B</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">Fm</strong>
+                            Scale: <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span><br>
+                            Chord: <span class="kbd">F</span> <span class="kbd">G#</span> <span class="kbd">C</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">F#m</strong>
+                            Scale: <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span><br>
+                            Chord: <span class="kbd">F#</span> <span class="kbd">A</span> <span class="kbd">C#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">Gm</strong>
+                            Scale: <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span><br>
+                            Chord: <span class="kbd">G</span> <span class="kbd">A#</span> <span class="kbd">D</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">G#m</strong>
+                            Scale: <span class="kbd" style="background: #444;">G#</span> <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span><br>
+                            Chord: <span class="kbd">G#</span> <span class="kbd">B</span> <span class="kbd">D#</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">Am</strong>
+                            Scale: <span class="kbd" style="background: #444;">A</span> <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">G</span><br>
+                            Chord: <span class="kbd">A</span> <span class="kbd">C</span> <span class="kbd">E</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">A#m</strong>
+                            Scale: <span class="kbd" style="background: #444;">A#</span> <span class="kbd" style="background: #444;">C</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D#</span> <span class="kbd" style="background: #444;">F</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G#</span><br>
+                            Chord: <span class="kbd">A#</span> <span class="kbd">C#</span> <span class="kbd">F</span>
+                        </div>
+                        <div>
+                            <strong style="color: #fff; display: inline-block; width: 35px;">Bm</strong>
+                            Scale: <span class="kbd" style="background: #444;">B</span> <span class="kbd" style="background: #444;">C#</span> <span class="kbd" style="background: #444;">D</span> <span class="kbd" style="background: #444;">E</span> <span class="kbd" style="background: #444;">F#</span> <span class="kbd" style="background: #444;">G</span> <span class="kbd" style="background: #444;">A</span><br>
+                            Chord: <span class="kbd">B</span> <span class="kbd">D</span> <span class="kbd">F#</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-tip" style="margin-top: 30px;">
+                💡 <strong>Tip:</strong> Major chords are formed by the Root, Major 3rd, and Perfect 5th. Minor chords use the Root, Minor 3rd, and Perfect 5th.
+            </div>
+        </div>
+    </div>
+
+    <!-- Analyzer Button -->
+    <button class="analyzer-btn" id="analyzer-toggle">🎙️ AI Song Analyzer</button>
+
+    <!-- Analyzer Dashboard -->
+    <div class="analyzer-dashboard" id="analyzer-dashboard">
+        <div class="dashboard-content">
+            <div class="dashboard-header">
+                <h2>🎙️ AI Telugu Song Analyzer</h2>
+                <button class="guide-close" id="analyzer-close" style="position: static;">✕</button>
+            </div>
+            
+            <div class="mic-section" style="display: flex; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <button class="mic-btn" id="analyzer-mic">🎤</button>
+                    <div class="status-text" id="analyzer-status">Click mic to start listening (Telugu supported)</div>
+                </div>
+                <button class="save-btn" id="clear-notes-btn" style="background: #e74c3c;">Clear Notes</button>
+            </div>
+
+            <div class="dashboard-body">
+                <div class="main-analysis">
+                    <div class="analysis-box">
+                        <h3>Lyrics (Telugu Web Speech API)</h3>
+                        <div class="lyrics-output lyrics-box" id="lyrics-output"><i>Waiting for speech...</i></div>
+                    </div>
+                    <div class="analysis-box">
+                        <h3>Detected Notes (2 Octaves)</h3>
+                        <div class="notes-stream" id="notes-output"></div>
+                    </div>
+                    <div class="analysis-box">
+                        <h3>Recommended Casio Scale</h3>
+                        <div class="scale-recommendation" id="scale-output">Detecting...</div>
+                    </div>
+                </div>
+
+                <div class="history-sidebar">
+                    <h3>Song History</h3>
+                    <div class="history-list" id="history-list"></div>
+                    
+                    <div class="save-controls" style="flex-wrap: wrap;">
+                        <input type="text" id="song-name-input" class="save-input" placeholder="Song Name..." style="min-width: 100%;">
+                        <button class="save-btn" id="save-song-btn" style="flex: 1;">Save to History</button>
+                        <button class="save-btn" id="export-song-btn" style="flex: 1; background: #9b59b6;">Export to File</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="analyzer.js"></script>
+</body>
+
+</html>
